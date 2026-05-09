@@ -5,12 +5,12 @@ LINK:
 
 YEAR: 2025
 NAME: Stanford Math Tournament
-DETAIL: 
+DETAIL: Honorable Mention
 LINK: 
 
 YEAR: 2025
 NAME: Berkeley Math Tournament
-DETAIL: 
+DETAIL: Distinguished Honor Roll
 LINK: 
 
 YEAR: 2024-26
