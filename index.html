@@ -8,21 +8,24 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Source+Serif+4:opsz,wght@8..60,300..700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --bg: #F4EFE5;
-      --bg-warm: #ECE4D2;
-      --ink: #1A1815;
-      --ink-soft: #3D3A35;
-      --muted: #8A8275;
-      --accent: #6B2828;
-      --line: #C9BFA8;
-      --line-soft: #DDD3BD;
-      --serif-display: 'Fraunces', Georgia, serif;
-      --serif-body: 'Source Serif 4', Georgia, serif;
-      --mono: 'JetBrains Mono', ui-monospace, monospace;
+      --bg: #050810;
+      --bg-elev: #0B1426;
+      --bg-soft: #0F1A30;
+      --ink: #E0E7F4;
+      --ink-soft: #95A4BD;
+      --muted: #4D5A75;
+      --accent: #00B0FF;
+      --accent-bright: #4DC4FF;
+      --accent-deep: #0277BD;
+      --accent-glow: rgba(0, 176, 255, 0.4);
+      --line: #1A2542;
+      --line-soft: #111A2E;
+      --sans: 'IBM Plex Sans', system-ui, sans-serif;
+      --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -31,24 +34,27 @@
     body {
       background: var(--bg);
       color: var(--ink);
-      font-family: var(--serif-body);
-      font-size: 17px;
-      line-height: 1.6;
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.65;
+      font-weight: 400;
       -webkit-font-smoothing: antialiased;
       background-image:
-        radial-gradient(circle at 15% 0%, rgba(107, 40, 40, 0.04), transparent 45%),
-        radial-gradient(circle at 85% 100%, rgba(107, 40, 40, 0.03), transparent 50%);
+        radial-gradient(ellipse 80% 50% at 15% 0%, rgba(0, 176, 255, 0.08), transparent 60%),
+        radial-gradient(ellipse 70% 50% at 85% 100%, rgba(2, 119, 189, 0.07), transparent 60%);
       min-height: 100vh;
     }
 
+    /* Subtle dot grid — instrument-panel feel */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
       pointer-events: none;
-      opacity: 0.35;
+      opacity: 0.5;
       z-index: 1;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      background-image: radial-gradient(circle, rgba(79, 134, 195, 0.09) 1px, transparent 1px);
+      background-size: 32px 32px;
     }
 
     .container {
@@ -59,6 +65,7 @@
       z-index: 2;
     }
 
+    /* ===================== NAV ===================== */
     nav {
       padding: 28px 0;
       display: flex;
@@ -71,8 +78,28 @@
       font-family: var(--mono);
       font-size: 12px;
       letter-spacing: 0.08em;
-      color: var(--ink);
+      color: var(--accent);
       text-transform: uppercase;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Pulsing live-indicator dot */
+    .brand::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-right: 10px;
+      box-shadow: 0 0 10px var(--accent), 0 0 4px var(--accent);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
     }
 
     .nav-links {
@@ -80,17 +107,21 @@
       gap: 28px;
       font-family: var(--mono);
       font-size: 12px;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
 
     .nav-links a {
       color: var(--ink-soft);
       text-decoration: none;
-      transition: color 0.2s ease;
+      transition: color 0.2s ease, text-shadow 0.2s ease;
       position: relative;
     }
 
-    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover {
+      color: var(--accent);
+      text-shadow: 0 0 12px var(--accent-glow);
+    }
 
     .nav-links a::after {
       content: '';
@@ -98,10 +129,12 @@
       left: 0; bottom: -4px;
       width: 0; height: 1px;
       background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
       transition: width 0.25s ease;
     }
     .nav-links a:hover::after { width: 100%; }
 
+    /* ===================== HERO ===================== */
     .hero {
       padding: 90px 0 72px;
       display: grid;
@@ -113,32 +146,44 @@
     .eyebrow {
       font-family: var(--mono);
       font-size: 11px;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--accent);
       margin-bottom: 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .eyebrow::before {
+      content: '//';
+      color: var(--muted);
+      font-weight: 500;
     }
 
     .hero h1 {
-      font-family: var(--serif-display);
-      font-size: clamp(60px, 9vw, 124px);
-      line-height: 0.92;
-      font-weight: 400;
-      font-variation-settings: "opsz" 144, "SOFT" 0;
-      letter-spacing: -0.035em;
-      margin-bottom: 36px;
+      font-family: var(--mono);
+      font-size: clamp(56px, 8.5vw, 112px);
+      line-height: 0.95;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      margin-bottom: 32px;
+      color: var(--ink);
     }
 
     .hero h1 em {
       font-style: italic;
-      font-weight: 350;
+      font-weight: 500;
+      color: var(--accent);
+      text-shadow: 0 0 28px rgba(0, 176, 255, 0.35);
     }
 
     .tagline {
-      font-size: 19px;
+      font-size: 18px;
       max-width: 540px;
       color: var(--ink-soft);
       line-height: 1.55;
+      font-weight: 400;
     }
 
     .tagline strong {
@@ -146,13 +191,26 @@
       font-weight: 600;
     }
 
+    .tagline em {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    /* ===================== PHOTO ===================== */
     .photo-frame {
       width: 280px;
       aspect-ratio: 1 / 1;
-      background: var(--bg-warm);
+      background: var(--bg-elev);
       border: 1px solid var(--line);
       position: relative;
       overflow: hidden;
+      box-shadow: 0 0 40px rgba(0, 176, 255, 0.06);
+      transition: box-shadow 0.4s ease, border-color 0.4s ease;
+    }
+
+    .photo-frame:hover {
+      border-color: var(--accent-deep);
+      box-shadow: 0 0 60px rgba(0, 176, 255, 0.18);
     }
 
     .photo-frame::before {
@@ -162,6 +220,25 @@
       border: 1px dashed var(--muted);
       pointer-events: none;
       z-index: 2;
+    }
+
+    /* Corner brackets */
+    .photo-frame::after {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      pointer-events: none;
+      z-index: 2;
+      background:
+        linear-gradient(to right, var(--accent) 14px, transparent 14px) top left / 14px 1px no-repeat,
+        linear-gradient(to bottom, var(--accent) 14px, transparent 14px) top left / 1px 14px no-repeat,
+        linear-gradient(to left, var(--accent) 14px, transparent 14px) top right / 14px 1px no-repeat,
+        linear-gradient(to bottom, var(--accent) 14px, transparent 14px) top right / 1px 14px no-repeat,
+        linear-gradient(to right, var(--accent) 14px, transparent 14px) bottom left / 14px 1px no-repeat,
+        linear-gradient(to top, var(--accent) 14px, transparent 14px) bottom left / 1px 14px no-repeat,
+        linear-gradient(to left, var(--accent) 14px, transparent 14px) bottom right / 14px 1px no-repeat,
+        linear-gradient(to top, var(--accent) 14px, transparent 14px) bottom right / 1px 14px no-repeat;
+      opacity: 0.7;
     }
 
     .photo-frame img {
@@ -196,14 +273,19 @@
       margin-bottom: 8px;
       color: var(--ink-soft);
     }
-    .photo-placeholder .dim { font-size: 10px; opacity: 0.7; }
+    .photo-placeholder .dim {
+      font-size: 10px;
+      opacity: 0.7;
+      color: var(--accent);
+    }
     .photo-placeholder .hint {
       margin-top: 18px;
       font-size: 9px;
       opacity: 0.55;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
     }
 
+    /* ===================== SECTIONS ===================== */
     section {
       padding: 80px 0;
       border-top: 1px solid var(--line);
@@ -219,19 +301,20 @@
 
     .section-num {
       font-family: var(--mono);
-      font-size: 12px;
+      font-size: 11px;
       color: var(--accent);
-      letter-spacing: 0.12em;
-      padding-top: 6px;
+      letter-spacing: 0.16em;
+      padding-top: 10px;
+      text-transform: uppercase;
     }
 
     .section-title {
-      font-family: var(--serif-display);
-      font-size: 38px;
-      font-weight: 400;
+      font-family: var(--mono);
+      font-size: clamp(28px, 3.5vw, 38px);
+      font-weight: 500;
       letter-spacing: -0.02em;
-      font-variation-settings: "opsz" 60;
       line-height: 1.1;
+      color: var(--ink);
     }
 
     .content {
@@ -247,13 +330,30 @@
 
     .content-body p {
       margin-bottom: 18px;
-      font-size: 17.5px;
+      font-size: 16.5px;
       color: var(--ink-soft);
+      font-family: var(--sans);
     }
     .content-body p:last-child { margin-bottom: 0; }
     .content-body strong { color: var(--ink); font-weight: 600; }
-    .content-body em { color: var(--accent); font-style: italic; }
+    .content-body em {
+      color: var(--accent);
+      font-style: italic;
+      text-shadow: 0 0 16px rgba(0, 176, 255, 0.2);
+    }
 
+    .content-body a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(0, 176, 255, 0.3);
+      transition: border-color 0.2s, text-shadow 0.2s;
+    }
+    .content-body a:hover {
+      border-bottom-color: var(--accent);
+      text-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    /* ===================== PROJECTS ===================== */
     .projects {
       grid-column: 2;
       display: grid;
@@ -275,35 +375,39 @@
       font-family: var(--mono);
       font-size: 10px;
       color: var(--accent);
-      letter-spacing: 0.14em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       margin-bottom: 14px;
     }
 
     .project h3 {
-      font-family: var(--serif-display);
-      font-size: 22px;
+      font-family: var(--mono);
+      font-size: 20px;
       font-weight: 500;
       margin-bottom: 10px;
       letter-spacing: -0.01em;
-      line-height: 1.2;
-      font-variation-settings: "opsz" 60;
+      line-height: 1.3;
+      color: var(--ink);
     }
 
     .project h3 a {
       color: var(--ink);
       text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.2s, color 0.2s;
+      transition: color 0.2s, text-shadow 0.2s;
     }
-    .project h3 a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    .project h3 a:hover {
+      color: var(--accent);
+      text-shadow: 0 0 16px var(--accent-glow);
+    }
 
     .project p {
-      font-size: 15px;
+      font-size: 14.5px;
       color: var(--ink-soft);
-      line-height: 1.55;
+      line-height: 1.6;
+      font-family: var(--sans);
     }
 
+    /* ===================== AWARDS ===================== */
     .awards {
       list-style: none;
       grid-column: 2;
@@ -316,29 +420,39 @@
       padding: 16px 0;
       border-bottom: 1px solid var(--line-soft);
       align-items: baseline;
+      transition: background 0.25s ease, padding 0.25s ease;
     }
     .awards li:first-child { border-top: 1px solid var(--line-soft); }
+    .awards li:hover {
+      background: linear-gradient(90deg, rgba(0, 176, 255, 0.05), transparent);
+      padding-left: 12px;
+    }
 
     .award-year {
       font-family: var(--mono);
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted);
-      letter-spacing: 0.04em;
+      letter-spacing: 0.06em;
     }
 
     .award-name {
-      font-family: var(--serif-body);
-      font-size: 16.5px;
+      font-family: var(--sans);
+      font-size: 16px;
       color: var(--ink);
+      font-weight: 500;
     }
 
     .award-name a {
       color: var(--ink);
       text-decoration: none;
       border-bottom: 1px solid var(--line);
-      transition: border-color 0.2s, color 0.2s;
+      transition: color 0.2s, border-color 0.2s, text-shadow 0.2s;
     }
-    .award-name a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    .award-name a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      text-shadow: 0 0 10px var(--accent-glow);
+    }
 
     .award-detail {
       font-family: var(--mono);
@@ -348,6 +462,7 @@
       letter-spacing: 0.04em;
     }
 
+    /* ===================== EEG WAVEFORM ===================== */
     .waveform-wrap {
       grid-column: 2;
       margin-top: 56px;
@@ -357,17 +472,28 @@
     .waveform-label {
       font-family: var(--mono);
       font-size: 10px;
-      color: var(--muted);
-      letter-spacing: 0.14em;
+      color: var(--accent);
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      margin-bottom: 10px;
+      margin-bottom: 14px;
+    }
+    .waveform-label::before {
+      content: '◉ ';
+      color: var(--accent);
+      animation: pulse 2.4s ease-in-out infinite;
     }
     .waveform {
       width: 100%;
       height: 60px;
       display: block;
+      color: var(--accent);
+    }
+    .waveform path {
+      stroke: currentColor;
+      filter: drop-shadow(0 0 6px var(--accent-glow));
     }
 
+    /* ===================== CONTACT ===================== */
     .contact-grid {
       grid-column: 2;
       display: grid;
@@ -377,52 +503,62 @@
 
     .contact-item {
       padding: 24px;
-      background: var(--bg-warm);
+      background: var(--bg-elev);
       border: 1px solid var(--line);
-      transition: transform 0.2s ease, border-color 0.2s ease;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
     }
     .contact-item:hover {
-      border-color: var(--accent);
+      border-color: var(--accent-deep);
       transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0, 176, 255, 0.12), 0 0 0 1px var(--accent-deep);
     }
 
     .contact-label {
       font-family: var(--mono);
       font-size: 10px;
-      color: var(--muted);
-      letter-spacing: 0.14em;
+      color: var(--accent);
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       margin-bottom: 10px;
     }
 
     .contact-value {
-      font-family: var(--serif-body);
-      font-size: 15px;
+      font-family: var(--mono);
+      font-size: 14px;
       color: var(--ink);
       word-break: break-word;
       line-height: 1.4;
+      font-weight: 400;
     }
 
     .contact-value a {
       color: var(--ink);
       text-decoration: none;
       border-bottom: 1px solid var(--line);
-      transition: border-color 0.2s, color 0.2s;
+      transition: border-color 0.2s, color 0.2s, text-shadow 0.2s;
     }
-    .contact-value a:hover { border-color: var(--accent); color: var(--accent); }
+    .contact-value a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      text-shadow: 0 0 10px var(--accent-glow);
+    }
 
+    /* ===================== FOOTER ===================== */
     footer {
       padding: 40px 0 56px;
       border-top: 1px solid var(--line);
       font-family: var(--mono);
       font-size: 11px;
       color: var(--muted);
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
+    /* ===================== FADE-IN ===================== */
     .fade-in {
       opacity: 0;
       transform: translateY(16px);
@@ -435,6 +571,7 @@
 
     ::selection { background: var(--accent); color: var(--bg); }
 
+    /* ===================== RESPONSIVE ===================== */
     @media (max-width: 768px) {
       .container { padding: 0 24px; }
       nav { padding: 22px 0; }
@@ -445,8 +582,8 @@
         gap: 40px;
         padding: 56px 0 48px;
       }
-      .hero h1 { font-size: clamp(56px, 14vw, 88px); }
-      .tagline { font-size: 17px; }
+      .hero h1 { font-size: clamp(54px, 13vw, 84px); }
+      .tagline { font-size: 16px; }
 
       .photo-frame { width: 100%; max-width: 320px; }
 
@@ -457,7 +594,7 @@
         gap: 14px;
       }
       .section-num { padding-top: 0; }
-      .section-title { font-size: 30px; }
+      .section-title { font-size: 28px; }
 
       .content-body,
       .projects,
@@ -509,7 +646,7 @@
 
       <!-- Save your photo as portrait.jpg in this folder, then change src="" → src="portrait.jpg" -->
       <div class="photo-frame" aria-label="Portrait">
-        <img src="portrait.jpg" alt="Larry Zhong" />
+        <img src="" alt="Larry Zhong" />
         <div class="photo-placeholder" aria-hidden="true">
           <div class="label">Portrait</div>
           <div class="dim">1080 × 1080</div>
@@ -564,7 +701,7 @@
           <div class="waveform-label">EEG · Cz channel · ~10 Hz</div>
           <svg class="waveform" viewBox="0 0 800 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M0,30 Q15,12 30,30 T60,30 Q75,46 90,30 T120,30 Q135,8 150,30 T180,30 Q195,42 210,30 T240,30 Q255,18 270,30 T300,30 Q315,4 330,30 Q345,52 360,30 T390,30 Q405,20 420,30 T450,30 Q465,46 480,30 T510,30 Q525,14 540,30 T570,30 Q585,40 600,30 T630,30 Q645,12 660,30 T690,30 Q705,48 720,30 T750,30 Q765,18 780,30 T800,30"
-                  stroke="#6B2828" stroke-width="1" fill="none" opacity="0.7" />
+                  stroke="currentColor" stroke-width="1.2" fill="none" />
           </svg>
         </div>
       </div>
@@ -601,8 +738,8 @@
 
   <script>
     // ------------------------------------------------------------------
-    //  Content loader
-    //  Each section pulls a .txt file. Missing files = section auto-hides.
+    //  Content loader — pulls each section from a .txt file.
+    //  Missing file → that section auto-hides.
     //  Light markdown in prose: **bold**, *italic*, [text](url)
     // ------------------------------------------------------------------
 
@@ -701,7 +838,6 @@
       },
     };
 
-    // If a file is missing, hide the parent section (cleaner than empty section)
     const sectionParents = {
       'about': 'about',
       'currently': 'currently',
@@ -738,7 +874,6 @@
         if (num) num.textContent = romans[i] || '';
       });
 
-      // Fade-in on scroll
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
